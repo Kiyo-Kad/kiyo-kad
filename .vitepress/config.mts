@@ -33,20 +33,10 @@ export default withMermaid({
           { text: 'Home', link: '/' },
           { text: 'About', link: '/about/' },
           { text: 'Posts', link: '/posts/' },
-          // { text: 'Tags', link: '/tags/' }
+          { text: 'Tags', link: '/tags/' }
         ]
       },
 
-/* *****
-    sidebar: [
-      {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
-      }
-***** */
     ],
 
     socialLinks: [
