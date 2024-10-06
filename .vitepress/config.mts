@@ -48,6 +48,8 @@ export default withMermaid({
       text: 'Edit this page on GitHub'
     },
 
+    externalLinkIcon: true,
+
   },
 
   lastUpdated: true,
