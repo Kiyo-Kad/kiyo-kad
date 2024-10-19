@@ -1,6 +1,12 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from "vitepress-plugin-mermaid";
 
+import { createWriteStream } from 'node:fs'
+import { resolve } from 'node:path'
+import { SitemapStream } from 'sitemap'
+
+const links = []
+
 // https://vitepress.dev/reference/site-config
 // export default defineConfig({
 export default withMermaid({
@@ -62,6 +68,25 @@ export default withMermaid({
   // optionally set additional config for plugin itself with MermaidPluginConfig
   mermaidPlugin: {
     class: "mermaid my-class", // set additional css classes for parent container 
+  },
+
+  transformHtml: (_, id, { pageData }) => {
+    // for sitemap
+    if (!/[\\/]404\.html$/.test(id)) {
+      links.push({
+        // 2024/10/19 EX  url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2'),
+        url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2'+ '.html'),
+        lastmod: pageData.frontmatter.date
+      })
+    }
+  },
+  buildEnd: ({ outDir }) => {
+    // sitemap
+    const sitemap = new SitemapStream({ hostname: 'https://kiyo-kad.github.io/kiyo-kad/' })
+    const sitemapStream = createWriteStream(resolve(outDir, 'sitemap.xml'))
+    sitemap.pipe(sitemapStream)
+    links.forEach((link) => sitemap.write(link))
+    sitemap.end()
   },
 
 })
